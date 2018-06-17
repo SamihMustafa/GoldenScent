@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         myVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setVolume(0,0);
                 mediaPlayer.setLooping(true);
             }
         });
