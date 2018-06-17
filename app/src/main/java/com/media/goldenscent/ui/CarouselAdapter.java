@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.media.goldenscent.R;
 
+import java.util.List;
+
 /**
  * Created by Samih on 17-Jun-18.
  */
@@ -19,6 +21,8 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.ViewHo
 
     private static final int ITEMS_PER_PAGE = 3;
     private final Context context;
+
+    List<String> imagesList;
 
     public CarouselAdapter(Context context) {
         this.context = context;
@@ -38,12 +42,20 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       Glide.with(context).load("https://picsum.photos/200/300/?image=" + position % 7).into((ImageView) holder.image);
+       Glide.with(context).load(getItem(position)).into((ImageView) holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return Integer.MAX_VALUE;
+        return imagesList == null ? 0 : Integer.MAX_VALUE;
+    }
+
+    public String getItem(int pos){
+        return imagesList.get(pos % 7);
+    }
+
+    public void setItemList(List<String> imageList) {
+        this.imagesList = imageList;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,5 +1,7 @@
 package com.media.goldenscent;
 
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.media.MediaPlayer;
@@ -19,6 +21,8 @@ import android.widget.VideoView;
 import com.media.goldenscent.ui.CarouselAdapter;
 import com.media.goldenscent.ui.CarouselLayoutManager;
 
+import java.util.List;
+
 /**
  * Created by Samih on 17-Jun-18.
  */
@@ -34,6 +38,7 @@ public class MainFragment extends Fragment {
     private ImageButton rightImageButton;
     private CarouselLayoutManager layoutManager;
     private View view;
+    private CarouselAdapter adapter;
 
     public MainFragment(){
         // Requires empty public constructor
@@ -49,7 +54,6 @@ public class MainFragment extends Fragment {
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
 
-
         return view;
     }
 
@@ -61,6 +65,13 @@ public class MainFragment extends Fragment {
         setImageButtons(view);
         setCarouselList(view);
 
+
+        viewModel.getListOfImages().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(@Nullable List<String> imageList) {
+                adapter.setItemList(imageList);
+            }
+        });
 
     }
 
@@ -93,14 +104,14 @@ public class MainFragment extends Fragment {
         carousel.setLayoutManager(layoutManager);
         carousel.setHasFixedSize(true);
 
-        CarouselAdapter adapter = new CarouselAdapter(getContext());
+        adapter = new CarouselAdapter(getContext());
         carousel.setAdapter(adapter);
         carousel.getLayoutManager().scrollToPosition(Integer.MAX_VALUE / 2);
     }
 
     private void setVideoPlayer(View view) {
         myVideo = view.findViewById(R.id.myVideo);
-        myVideo.setVideoURI(Uri.parse("http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8"));
+        myVideo.setVideoURI(Uri.parse(viewModel.getVideoLink().getValue()));
         myVideo.start();
         myVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
