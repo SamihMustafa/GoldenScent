@@ -1,19 +1,14 @@
 package com.media.goldenscent;
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,10 +107,24 @@ public class MainFragment extends Fragment {
 
     private void setVideoPlayer(View view) {
         myVideo = view.findViewById(R.id.myVideo);
-        myVideo.setVideoURI(Uri.parse(viewModel.getVideoLink().getValue()));
-        myVideo.start();
         myVideo.setOnPreparedListener(listener);
+        myVideo.setOnCompletionListener(onCompletedListener);
+        viewModel.playNextVideo();
+        viewModel.getVideoPosition().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                myVideo.setVideoURI(Uri.parse(viewModel.videoList.get(viewModel.getVideoPosition().getValue())));
+                myVideo.start();
+            }
+        });
     }
+
+    final MediaPlayer.OnCompletionListener onCompletedListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mediaPlayer) {
+            viewModel.playNextVideo();
+        }
+    };
 
     final MediaPlayer.OnPreparedListener listener = new MediaPlayer.OnPreparedListener() {
 

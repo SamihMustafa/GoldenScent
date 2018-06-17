@@ -3,6 +3,7 @@ package com.media.goldenscent;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.MutableInt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,22 +15,27 @@ import java.util.Random;
 public class MainViewModel extends ViewModel {
 
     private MutableLiveData<List<String>> imageList;
-    private MutableLiveData<String> videoLink;
+    private MutableLiveData<Integer> videoPosition;
+    private static int count = 0;
+    public ArrayList<String> videoList;
 
     public MainViewModel(){
-
+        createVideoLink();
     }
 
-    public LiveData<String> getVideoLink(){
-        if(videoLink == null){
-            videoLink = new MutableLiveData<>();
-            selectVideoLink();
+    public MutableLiveData<Integer> getVideoPosition(){
+        if(videoPosition == null){
+            videoPosition = new MutableLiveData<>();
+            videoPosition.setValue(0);
         }
-        return videoLink;
+        return videoPosition;
     }
 
-    private void selectVideoLink() {
-        videoLink.setValue("http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8");
+    private void createVideoLink() {
+        videoList = new ArrayList<>();
+        videoList.add("http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8");
+        videoList.add("http://cdn-fms.rbs.com.br/hls-vod/sample1_1500kbps.f4v.m3u8");
+        videoList.add("http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8");
 }
 
     public LiveData<List<String>> getListOfImages(){
@@ -49,4 +55,9 @@ public class MainViewModel extends ViewModel {
     }
 
 
+    public void playNextVideo() {
+        count++;
+        if(count == 3) count = 0;
+        videoPosition.setValue(count);
+    }
 }
