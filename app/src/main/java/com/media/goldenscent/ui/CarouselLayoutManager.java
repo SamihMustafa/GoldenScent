@@ -13,7 +13,7 @@ public class CarouselLayoutManager extends LinearLayoutManager{
     public CarouselLayoutManager(Context context) {
         super(context);
         super.setOrientation(LinearLayoutManager.HORIZONTAL);
-        super.setReverseLayout(true);
+        super.setReverseLayout(false);
     }
 
     @Override

@@ -23,6 +23,7 @@
         app:layout_constraintHeight_percent=".25" />
 
     <ImageButton
+        android:id="@+id/move_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
@@ -31,11 +32,11 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <ImageButton
+        android:id="@+id/move_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
         app:layout_constraintBottom_toTopOf="@+id/myCarousel" />
-
 
 </android.support.constraint.ConstraintLayout>
