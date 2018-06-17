@@ -4,11 +4,15 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.widget.VideoView;
+
+import com.media.goldenscent.ui.CarouselLayoutManager;
 
 public class MainActivity extends AppCompatActivity {
 
     private VideoView myVideo;
+    private RecyclerView carousel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer.setLooping(true);
             }
         });
+
+        carousel = findViewById(R.id.myCarousel);
+        carousel.setLayoutManager(new CarouselLayoutManager(this));
+        carousel.setHasFixedSize(true);
+
+        CarouselAdapter adapter = new CarouselAdapter(this);
+        carousel.setAdapter(adapter);
 
     }
 }
