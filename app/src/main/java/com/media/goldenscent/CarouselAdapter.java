@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.ViewHolder> {
 
 
+    private static final int ITEMS_PER_PAGE = 3;
     private final Context context;
 
     public CarouselAdapter(Context context) {
@@ -27,14 +28,16 @@ class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.carousel_list_item, null, false);
-        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        int itemWidth = parent.getWidth() / ITEMS_PER_PAGE;
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
         v.setLayoutParams(lp);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       Glide.with(context).load("https://picsum.photos/200/300/?random").into((ImageView) holder.image);
+       Glide.with(context).load("https://picsum.photos/200/300/?image=" + position).into((ImageView) holder.image);
     }
 
     @Override

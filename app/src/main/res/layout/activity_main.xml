@@ -13,9 +13,10 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/myCarousel"
-        android:padding="2dp"
+        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_default="percent"
         app:layout_constraintHeight_percent=".25"/>
