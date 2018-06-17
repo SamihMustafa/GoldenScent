@@ -21,12 +21,14 @@ public class MainViewModel extends ViewModel {
 
     public MainViewModel(){
         createVideoLink();
+        videoPosition = new MutableLiveData<>();
+        videoPosition.setValue(count);
     }
 
     public MutableLiveData<Integer> getVideoPosition(){
         if(videoPosition == null){
             videoPosition = new MutableLiveData<>();
-            videoPosition.setValue(0);
+            videoPosition.setValue(count);
         }
         return videoPosition;
     }
