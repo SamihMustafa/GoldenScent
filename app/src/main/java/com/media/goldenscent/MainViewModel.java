@@ -15,6 +15,7 @@ public class MainViewModel extends ViewModel {
 
     private MutableLiveData<List<String>> imageList;
     private MutableLiveData<String> videoLink;
+    private MutableLiveData<Integer> videoPosition;
 
     public MainViewModel(){
 
@@ -47,6 +48,15 @@ public class MainViewModel extends ViewModel {
         }
         imageList.setValue(list);
     }
+
+    public MutableLiveData<Integer> getVideoPosition(){
+        if(videoPosition == null){
+            videoPosition = new MutableLiveData<>();
+            videoPosition.setValue(0);
+        }
+        return videoPosition;
+    }
+
 
 
 }

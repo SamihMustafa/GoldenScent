@@ -6,12 +6,14 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,17 +55,38 @@ public class MainFragment extends Fragment {
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
+        setVideoPlayer(view);
+        setImageButtons(view);
+        setCarouselList(view);
+
+
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(myVideo != null){
+            Log.i("onResume","it Resumed");
+            resumeVideo();
+        }
+    }
+
+    private void resumeVideo() {
+        myVideo.resume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        pauseVideo();
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setVideoPlayer(view);
-        setImageButtons(view);
-        setCarouselList(view);
+
 
 
         viewModel.getListOfImages().observe(this, new Observer<List<String>>() {
@@ -113,6 +136,7 @@ public class MainFragment extends Fragment {
         myVideo = view.findViewById(R.id.myVideo);
         myVideo.setVideoURI(Uri.parse(viewModel.getVideoLink().getValue()));
         myVideo.start();
+        viewModel.getVideoPosition().observe(this, getPositionOfPause);
         myVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
@@ -121,5 +145,19 @@ public class MainFragment extends Fragment {
             }
         });
     }
+
+    final Observer<Integer> getPositionOfPause = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable Integer pos) {
+            if(myVideo != null && pos != null){
+                myVideo.seekTo(pos);
+            }
+        }
+    };
+
+    private void pauseVideo() {
+        viewModel.getVideoPosition().setValue(myVideo.getCurrentPosition());
+    }
+
 
 }
