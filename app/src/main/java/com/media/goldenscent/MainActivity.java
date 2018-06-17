@@ -1,6 +1,5 @@
 package com.media.goldenscent;
 
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.VideoView;
 
+import com.media.goldenscent.ui.CarouselAdapter;
 import com.media.goldenscent.ui.CarouselLayoutManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,10 +42,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int pos = layoutManager.findFirstVisibleItemPosition();
-                Log.i("Item position","pos at " + pos);
                 carousel.scrollToPosition(pos - 1);
-                int newpos = layoutManager.findFirstVisibleItemPosition();
-                Log.i("Item position","new pos at " + newpos);
             }
         });
 
@@ -54,10 +51,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int pos = layoutManager.findLastVisibleItemPosition();
-                Log.i("Item position","pos at " + pos);
                 carousel.scrollToPosition(pos + 1);
-                int newpos = layoutManager.findLastVisibleItemPosition();
-                Log.i("Item position","new pos at " + newpos);
             }
         });
 
@@ -71,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         CarouselAdapter adapter = new CarouselAdapter(this);
         carousel.setAdapter(adapter);
+        carousel.getLayoutManager().scrollToPosition(Integer.MAX_VALUE / 2);
     }
 
     private void setVideoPlayer() {

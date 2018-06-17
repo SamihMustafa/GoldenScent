@@ -1,4 +1,4 @@
-package com.media.goldenscent;
+package com.media.goldenscent.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.media.goldenscent.R;
 
 /**
  * Created by Samih on 17-Jun-18.
  */
-class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.ViewHolder> {
+public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.ViewHolder> {
 
 
     private static final int ITEMS_PER_PAGE = 3;
@@ -37,12 +38,12 @@ class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       Glide.with(context).load("https://picsum.photos/200/300/?image=" + position).into((ImageView) holder.image);
+       Glide.with(context).load("https://picsum.photos/200/300/?image=" + position % 7).into((ImageView) holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return 7;
+        return Integer.MAX_VALUE;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
