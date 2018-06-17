@@ -1,8 +1,11 @@
 package com.media.goldenscent;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -23,34 +26,43 @@ public class MainFragment extends Fragment {
 
     public static final String TAG = "Main Fragment";
 
+    private MainViewModel viewModel;
+
     private VideoView myVideo;
     private RecyclerView carousel;
     private ImageButton leftImageButton;
     private ImageButton rightImageButton;
     private CarouselLayoutManager layoutManager;
-
-
+    private View view;
 
     public MainFragment(){
-
+        // Requires empty public constructor
     }
 
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        setVideoPlayer(view);
-        setImageButtons(view);
-        setCarouselList(view);
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
 
 
         return view;
     }
 
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setVideoPlayer(view);
+        setImageButtons(view);
+        setCarouselList(view);
+
+
+    }
 
     private void setImageButtons(View view) {
         leftImageButton = view.findViewById(R.id.move_left);
