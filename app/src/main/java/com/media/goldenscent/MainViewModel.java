@@ -15,7 +15,6 @@ public class MainViewModel extends ViewModel {
 
     private MutableLiveData<List<String>> imageList;
     private MutableLiveData<String> videoLink;
-    private MutableLiveData<Integer> videoPosition;
 
     public MainViewModel(){
 
@@ -30,7 +29,7 @@ public class MainViewModel extends ViewModel {
     }
 
     private void selectVideoLink() {
-        videoLink.setValue("http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8");
+        videoLink.setValue("http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8");
 }
 
     public LiveData<List<String>> getListOfImages(){
@@ -44,19 +43,10 @@ public class MainViewModel extends ViewModel {
     private void createList() {
         List<String> list = new ArrayList<>();
         for(int i = 0; i < 7; i++){
-            list.add("https://picsum.photos/200/300?image=" + new Random().nextInt(100));
+            list.add("https://picsum.photos/200/300?image=" + new Random().nextInt(50));
         }
         imageList.setValue(list);
     }
-
-    public MutableLiveData<Integer> getVideoPosition(){
-        if(videoPosition == null){
-            videoPosition = new MutableLiveData<>();
-            videoPosition.setValue(0);
-        }
-        return videoPosition;
-    }
-
 
 
 }

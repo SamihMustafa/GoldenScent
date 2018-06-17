@@ -41,6 +41,7 @@ public class MainFragment extends Fragment {
     private CarouselLayoutManager layoutManager;
     private View view;
     private CarouselAdapter adapter;
+    public MediaPlayer mediaVideoPlayer;
 
     public MainFragment(){
         // Requires empty public constructor
@@ -59,35 +60,12 @@ public class MainFragment extends Fragment {
         setImageButtons(view);
         setCarouselList(view);
 
-
-
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(myVideo != null){
-            Log.i("onResume","it Resumed");
-            resumeVideo();
-        }
-    }
-
-    private void resumeVideo() {
-        myVideo.resume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        pauseVideo();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
 
         viewModel.getListOfImages().observe(this, new Observer<List<String>>() {
             @Override
@@ -136,28 +114,16 @@ public class MainFragment extends Fragment {
         myVideo = view.findViewById(R.id.myVideo);
         myVideo.setVideoURI(Uri.parse(viewModel.getVideoLink().getValue()));
         myVideo.start();
-        viewModel.getVideoPosition().observe(this, getPositionOfPause);
-        myVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setVolume(0,0);
-                mediaPlayer.setLooping(true);
-            }
-        });
+        myVideo.setOnPreparedListener(listener);
     }
 
-    final Observer<Integer> getPositionOfPause = new Observer<Integer>() {
+    final MediaPlayer.OnPreparedListener listener = new MediaPlayer.OnPreparedListener() {
+
         @Override
-        public void onChanged(@Nullable Integer pos) {
-            if(myVideo != null && pos != null){
-                myVideo.seekTo(pos);
-            }
+        public void onPrepared(MediaPlayer mediaPlayer) {
+            mediaPlayer.setVolume(0,0);
+            mediaPlayer.setLooping(true);
         }
     };
-
-    private void pauseVideo() {
-        viewModel.getVideoPosition().setValue(myVideo.getCurrentPosition());
-    }
-
 
 }
