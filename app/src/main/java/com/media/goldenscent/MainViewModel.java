@@ -35,9 +35,9 @@ public class MainViewModel extends ViewModel {
 
     private void createVideoLink() {
         videoList = new ArrayList<>();
+        videoList.add("http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8");
         videoList.add("http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8");
         videoList.add("http://cdn-fms.rbs.com.br/hls-vod/sample1_1500kbps.f4v.m3u8");
-        videoList.add("http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8");
 }
 
     public LiveData<List<String>> getListOfImages(){

@@ -36,7 +36,6 @@ public class MainFragment extends Fragment {
     private CarouselLayoutManager layoutManager;
     private View view;
     private CarouselAdapter adapter;
-    public MediaPlayer mediaVideoPlayer;
 
     public MainFragment(){
         // Requires empty public constructor
@@ -79,7 +78,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int pos = layoutManager.findFirstVisibleItemPosition();
-                carousel.scrollToPosition(pos - 1);
+                layoutManager.scrollToPosition(pos - 1);
             }
         });
 
@@ -88,7 +87,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int pos = layoutManager.findLastVisibleItemPosition();
-                carousel.scrollToPosition(pos + 1);
+                layoutManager.scrollToPosition(pos + 1);
             }
         });
 
@@ -109,14 +108,17 @@ public class MainFragment extends Fragment {
         myVideo = view.findViewById(R.id.myVideo);
         myVideo.setOnPreparedListener(listener);
         myVideo.setOnCompletionListener(onCompletedListener);
-        viewModel.playNextVideo();
         viewModel.getVideoPosition().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(@Nullable Integer integer) {
-                myVideo.setVideoURI(Uri.parse(viewModel.videoList.get(viewModel.getVideoPosition().getValue())));
-                myVideo.start();
+            public void onChanged(@Nullable Integer pos) {
+                playVideo(pos);
             }
         });
+    }
+
+    private void playVideo(Integer pos) {
+        myVideo.setVideoURI(Uri.parse(viewModel.videoList.get(pos)));
+        myVideo.start();
     }
 
     final MediaPlayer.OnCompletionListener onCompletedListener = new MediaPlayer.OnCompletionListener() {
@@ -131,7 +133,6 @@ public class MainFragment extends Fragment {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
             mediaPlayer.setVolume(0,0);
-            mediaPlayer.setLooping(true);
         }
     };
 
